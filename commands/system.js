@@ -246,6 +246,22 @@ Type ${prefix}menu for my command list.
 
 > © 𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙴𝙳 𝙱𝚈 ᳆⃞⃚🇱🇰ʀͥᴇᷧᴀͫʟ⃟   𝙴𝙻𝙸𝚃𝙴-𝚖𝚍
 `;
+                  const buttons = [
+        {
+          "name": "quick_reply",
+          "buttonParamsJson": JSON.stringify({
+            display_text: "MENU",
+            id: `.menu`
+          })
+        },
+        {
+          "name": "quick_reply",
+          "buttonParamsJson": JSON.stringify({
+            display_text: "PING",
+            id: `.ping`
+          })
+        }
+        ];
             let aliveMessage = {
                 image: {
                     url: await botpic(),
