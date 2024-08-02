@@ -17,7 +17,7 @@ WORKDIR /usr/src/app
 COPY package.json .
 
 # Install Node.js dependencies including axios and yt-search
-RUN npm install && npm install -g qrcode-terminal pm2 && npm install axios yt-search
+RUN npm install && npm install -g qrcode-terminal pm2 && npm install ytdl-core@latest
 
 # Copy the rest of the application code to the container
 COPY . .
