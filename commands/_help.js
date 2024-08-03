@@ -48,7 +48,7 @@ Secktor.cmd({
         pattern: "owner",
         desc: "To find owner number",
         category: "general",
-        react: "👾",
+        react: "🙂",
         filename: __filename
     },
     async(Void, citel) => {
@@ -113,7 +113,7 @@ Secktor.cmd({
     if (!location) { 
       throw new Error("Please specify a location after the command.");
     }
-    moment.tz.setDefault("Africa/Lagos");
+    moment.tz.setDefault("srilanka/colombo");
 
     let formattedTime = moment().format('MMMM Do YYYY, h:mm:ss a z');
     let targetTime;
