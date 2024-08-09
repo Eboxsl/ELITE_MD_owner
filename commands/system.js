@@ -245,19 +245,18 @@ ${alivemessage}
 Type ${prefix}menu for my command list.
 
 > © 𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙴𝙳 𝙱𝚈 ᳆⃞⃚🇱🇰ʀͥᴇᷧᴀͫʟ⃟   𝙴𝙻𝙸𝚃𝙴-𝚖𝚍
-`;
-              externalAdReply: {
-                title:
-                  '\uD83D\uDC68‍\uD83D\uDCBB ＶＡＪＩＲＡ - ＭＤ - Ｖ4 \uD83D\uDC68‍\uD83D\uDCBB',
-                body: 'ᴀɴ ᴜꜱᴇʀ ʙᴏᴛ ꜰᴏʀ ᴡʜᴀᴛꜱᴀᴘᴘ',
-                mediaType: 1,
-                sourceUrl: '',
-                thumbnailUrl: config.IMAGE,
-                sourceUrl: 'https://wa.me/94719199757',
-                mediaType: 1,
-                renderLargerThumbnail: true,                    
+`
+ externalAdReply: {
+               title:
+  '\uD83D\uDC68‍\uD83D\uDCBB ＶＡＪＩＲＡ - ＭＤ - Ｖ4 \uD83D\uDC68‍\uD83D\uDCBB',
+   body: 'ᴀɴ ᴜꜱᴇʀ ʙᴏᴛ ꜰᴏʀ ᴡʜᴀᴛꜱᴀᴘᴘ',
+   mediaType: 1,
+   sourceUrl: '',
+   thumbnailUrl: config.IMAGE,
+   sourceUrl: 'https://wa.me/94719199757',
+   mediaType: 1,
+   renderLargerThumbnail: true,   ;                 
 
-];
             let aliveMessage = {
                 image: {
                     url: await botpic(),
