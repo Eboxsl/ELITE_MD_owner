@@ -17,7 +17,7 @@ WORKDIR /usr/src/app
 COPY package.json .
 
 # Install Node.js dependencies including axios
-RUN npm install && npm install -g qrcode-terminal pm2  && npm ytdl-core
+RUN npm install && npm install -g qrcode-terminal pm2 && ytdl-core
 
 
 # Copy the rest of the application code to the container
