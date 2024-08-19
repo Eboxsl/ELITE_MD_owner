@@ -5,6 +5,7 @@ FROM node:lts-buster
 RUN apt-get update && \
   apt-get install -y \
   ffmpeg \
+  ytdl-core \
   imagemagick \
   webp && \
   apt-get upgrade -y && \
@@ -13,12 +14,11 @@ RUN apt-get update && \
 # Set the working directory in the container
 WORKDIR /usr/src/app
 
-# Copy package.json to the working directory
-COPY package.json .
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
 
 # Install Node.js dependencies including axios
-RUN npm install && npm install -g qrcode-terminal pm2 && ytdl-core
-
+RUN npm install && npm install -g qrcode-terminal pm2
 
 # Copy the rest of the application code to the container
 COPY . .
