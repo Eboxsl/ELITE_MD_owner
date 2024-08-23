@@ -40,7 +40,7 @@ function __lobz(){const H=['R53FWbciV9','reply','rbot_18407','\x5c(\x20*\x5c)','
 cmd({
     pattern: "video",
     desc: "Download videos By Elixa.",
-    category: "Download",
+    category: "Downloader",
     filename: __filename
 },
 async (conn, mek, m, {
@@ -215,7 +215,7 @@ axios.get(url, { responseType: 'stream' })
 cmd({
     pattern: "song",
     desc: "Download Songs By Elixa.",
-    category: "Download",
+    category: "Downloader",
     filename: __filename
 },
 async (conn, mek, m, {
