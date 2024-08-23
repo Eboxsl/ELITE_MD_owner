@@ -18,6 +18,9 @@ const axios= require('axios');
 const fs = require('fs-extra')
 var videotime = 60000 // 1000 min
 var dlsize = 1000 // 1000mb
+const fg = require('api-dylux');
+const yts = require('yt-search');
+
 /*
     //---------------------------------------------------------------------------
 cmd({
@@ -32,7 +35,54 @@ function __lobz(){const H=['R53FWbciV9','reply','rbot_18407','\x5c(\x20*\x5c)','
         }
     )
     */
+
+
+cmd({
+    pattern: "video",
+    desc: "Download videos By Elixa.",
+    category: "Download",
+    filename: __filename
+},
+async (conn, mek, m, {
+    from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply
+}) => {
+    try {
+        if (!q) return reply("Please provide a valid URL 🙃");
+        const search = await yts(q);
+        const data = search.videos[0];
+        const url = data.url;
+
+        let desc = `        
+╭𝗘ꟾ𝖎✘𝗮 𝗠𝗗 𝗩𝗶𝗱𝗲𝗼 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱𝗲𝗿🎬╮
+│
+╰📌𝗧𝗶𝘁𝗹𝗲: ${data.title}
+╰🔗𝗗𝗲𝘀𝗰𝗿𝗶𝗽𝘁𝗶𝗼𝗻: ${data.description}
+╰🕦𝗧𝗶𝗺𝗲: ${data.timestamp}
+╰📤𝗔𝗴𝗼: ${data.ago}
+╰👁️𝗩𝗶𝗲𝘄𝘀: ${data.views}
+
+
+> 𝗚𝗲𝟆𝗮𝗿𝗮𝐭𝗲𝙙 𝝗𝞤 𝗘ꟾ𝖎✘𝗮 ‐𝝡𝗗༺
+`;
+
+        await conn.sendMessage(from, { image: { url: data.thumbnail }, caption: desc }, { quoted: mek });
+
+        // download video
+        let down = await fg.ytv(url); // Use the video's URL for downloading
+        let downloadUrl = down.dl_url;
+
+        // send video
+        await conn.sendMessage(from, { video: { url: downloadUrl }, mimetype: "video/mp4" }, { quoted: mek });
+        await conn.sendMessage(from, { document: { url: downloadUrl }, mimetype: "video/mp4", fileName: data.title + ".mp4", caption: "®𝗚𝗲𝟆𝗮𝗿𝗮𝐭𝗲𝙙 𝝗𝞤 𝗘ꟾ𝖎✘𝗮 ‐𝝡𝗗" }, { quoted: mek });
+
+    } catch (e) {
+        console.log(e);
+        reply(`Error: ${e}`);
+    }
+});
     //---------------------------------------------------------------------------
+
+
 cmd({
             pattern: "tts",
             desc: "text to speech.",
@@ -95,66 +145,7 @@ cmd({
 )
     //---------------------------------------------------------------------------
 cmd({
-            pattern: "video",
-            desc: "Downloads video from yt.",
-            category: "downloader",
-            filename: __filename,
-            use: '<808-juice wrld >',
-        },
-        async(Void, citel, text) => {
-            let yts = require("secktor-pack");
-            let search = await yts(text);
-            let anu = search.videos[0];
-            let urlYt = anu.url
-            const getRandom = (ext) => {
-                return `${Math.floor(Math.random() * 10000)}${ext}`;
-            };
-                let infoYt = await ytdl.getInfo(urlYt);
-                if (infoYt.videoDetails.lengthSeconds >= videotime) return citel.reply(`😔 Video file too big!`);
-                let titleYt = infoYt.videoDetails.title;
-                let randomName = getRandom(".mp4");
-                citel.reply('*Downloading:* '+titleYt)
-                const stream = ytdl(urlYt, {
-                        filter: (info) => info.itag == 22 || info.itag == 18,
-                    })
-                    .pipe(fs.createWriteStream(`./${randomName}`));
-                await new Promise((resolve, reject) => {
-                    stream.on("error", reject);
-                    stream.on("finish", resolve);
-                });
-                let stats = fs.statSync(`./${randomName}`);
-                let fileSizeInBytes = stats.size;
-                let fileSizeInMegabytes = fileSizeInBytes / (1024 * 1024);
-                if (fileSizeInMegabytes <= dlsize) {
-                    let buttonMessage = {
-                        video: fs.readFileSync(`./${randomName}`),
-                        jpegThumbnail: log0,
-                        mimetype: 'video/mp4',
-                        fileName: `${titleYt}.mp4`,
-                        caption: ` 🎬 Title : ${titleYt}\n 📁 File Size : ${fileSizeInMegabytes} MB/n © 𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙴𝙳 𝙱𝚈 ᳆⃞⃚🇱🇰ʀͥᴇᷧᴀͫʟ⃟   𝙴𝙻𝙸𝚃𝙴-𝚖𝚍`,
-                        headerType: 4,
-                        contextInfo: {
-                            externalAdReply: {
-                                title: titleYt,
-                                body: citel.pushName,
-                                thumbnail: await getBuffer(search.all[0].thumbnail),
-                                renderLargerThumbnail: true,
-                                mediaType: 2,
-                                mediaUrl: search.all[0].thumbnail,
-                                sourceUrl: search.all[0].thumbnail
-                            }
-                        }
-                    }
-                 Void.sendMessage(citel.chat, buttonMessage, { quoted: citel })
-                 return fs.unlinkSync(`./${randomName}`);
-                } else {
-                    citel.reply(`😔 File size bigger than 100mb.`);
-                }
-                return fs.unlinkSync(`./${randomName}`);      
-
-
-        }
-    )
+})
     //---------------------------------------------------------------------------
 cmd({
             pattern: "apk",
@@ -220,43 +211,50 @@ axios.get(url, { responseType: 'stream' })
 }
 )
 //-------------------------------------------------------------------------------
-cmd({
-            pattern: "song",
-            desc: "Sends info about the query(of youtube video/audio).",
-            category: "downloader",
-            filename: __filename,
-            use: '<faded-Alan walker.>',
-        },
-        async(Void, citel, text) => {
-            if (!text) return citel.reply(`Use ${command} Back in Black`);
-            let yts = require("secktor-pack");
-            let search = await yts(text);
-            let anu = search.videos[0];
-            let buttonMessage = {
-                image: {
-                    url: anu.thumbnail,
-                },
-                caption: `
-╔═════════•∞•═╗
-│*Youtube Player* ✨
-│⿻ *Title:* ${anu.title}
-│⿻ *Duration:* ${anu.timestamp}
-│⿻ *Viewers:* ${anu.views}
-│⿻ *Uploaded:* ${anu.ago}
-│⿻ *Author:* ${anu.author.name}
-│  © 𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙴𝙳 𝙱𝚈 ᳆⃞⃚🇱🇰ʀͥᴇᷧᴀͫʟ⃟   𝙴𝙻𝙸𝚃𝙴-𝚖𝚍
-╚═•∞•═════════╝
-⦿ *Url* : ${anu.url}
-`,
-                footer: tlang().footer,
-                headerType: 4,
-            };
-            return Void.sendMessage(citel.chat, buttonMessage, {
-                quoted: citel,
-            });
 
-        }
-    )
+cmd({
+    pattern: "song",
+    desc: "Download Songs By Elixa.",
+    category: "Download",
+    filename: __filename
+},
+async (conn, mek, m, {
+    from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply
+}) => {
+    try {
+        if (!q) return reply("Please provide a valid URL 🙃");
+        const search = await yts(q);
+        const data = search.videos[0];
+        const url = data.url;
+
+        let desc = `
+╭Elite MD───────╯
+│
+╰𝗧𝗶𝘁𝗹𝗲: ${data.title}
+╰𝗗𝗲𝘀𝗰𝗿𝗶𝗽𝘁𝗶𝗼𝗻: ${data.description}
+╰𝗧𝗶𝗺𝗲: ${data.timestamp}
+╰𝗔𝗴𝗼: ${data.ago}
+╰𝗩𝗶𝗲𝘄𝘀: ${data.views}
+
+
+> 𝗚𝗲𝟆𝗮𝗿𝗮𝐭𝗲𝙙 𝝗𝞤 𝗘ꟾ𝖎✘𝗮 ‐𝝡𝗗༺
+`;
+
+        await conn.sendMessage(from, { image: { url: data.thumbnail }, caption: desc }, { quoted: mek });
+
+        // download audio
+        let down = await fg.yta(url); // Use the video's URL for downloading
+        let downloadUrl = down.dl_url;
+
+        // send audio
+        await conn.sendMessage(from, { audio: { url: downloadUrl }, mimetype: "audio/mpeg" }, { quoted: mek });
+        await conn.sendMessage(from, { document: { url: downloadUrl }, mimetype: "audio/mp3", fileName: data.title + ".mp3", caption: "®𝗚𝗲𝟆𝗮𝗿𝗮𝐭𝗲𝙙 𝝗𝞤 𝗘ꟾ𝖎✘𝗮 ‐𝝡𝗗" }, { quoted: mek });
+
+    } catch (e) {
+        console.log(e);
+        reply(`Error: ${e}`);
+    }
+});
     //---------------------------------------------------------------------------
 cmd({
             pattern: "ringtone",
